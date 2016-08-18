@@ -1,0 +1,134 @@
+<?php
+/**
+ * 微信公众平台-自定义菜单功能开发源代码
+ * ================================
+ * Copy 2013-2014 David Tang
+ * http://www.github.com/Paitson
+ * ================================
+ * Author:Paitson
+ * 个人微信：paitson
+ * 公众微信：Home_pt
+ * Date:2015-08-10
+ */
+
+header('Content-Type: text/html; charset=UTF-8');
+
+
+header("Content-type: text/html; charset=utf-8");
+define("ACCESS_TOKEN", "9HwoqYolDCbCTTcXvCEQj9B41kccm4A6yed6AQCSNY7YcTfT4l6mRRVIyFuIwOql4lLCZ_WkpyDUSK3d8v3iDLQRrm7TSBvBvbrdrWNPl6bB0gtxx1YhGOzFGW6UFprzDUQhAAAZQM");
+
+
+//创建菜单
+function createMenu($data){
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".ACCESS_TOKEN);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)');
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$tmpInfo = curl_exec($ch);
+if (curl_errno($ch)) {
+  return curl_error($ch);
+}
+
+curl_close($ch);
+return $tmpInfo;
+
+}
+
+//获取菜单
+function getMenu(){
+return file_get_contents("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=".ACCESS_TOKEN);
+}
+
+//删除菜单
+function deleteMenu(){
+return file_get_contents("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=".ACCESS_TOKEN);
+}
+
+
+
+
+
+$data = '{
+    "button": [
+        {
+            "name": "游戏名字", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "手游官网", 
+                    "url": "http://www.soso.com/"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "官网下载地址", 
+                    "url": "http://www.百度.com/"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "账号管理", 
+                    "url": "http://www.imooc.com/"
+                }
+            ]
+        }, 
+        {
+            "name": "福利专区", 
+            "sub_button": [
+                {
+                    "type": "click", 
+                    "name": "微信礼包", 
+                    "key": "wxlb"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "五星好评礼包", 
+                    "url": "http://qm.qq.com/cgi-bin/qm/qr?k=_P3sTX49aQJFPm7l4c5YBvQLZu0eW6ZC"
+                }
+            ]
+        }, 
+        {
+            "name": "社区互动", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "安卓1群", 
+                    "url": "http://qm.qq.com/cgi-bin/qm/qr?k=_P3sTX49aQJFPm7l4c5YBvQLZu0eW6ZC"
+                }, 
+                {
+                    "type": "click", 
+                    "name": "安卓2群", 
+                    "key": "android2"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "ios1群", 
+                    "url": "http://qm.qq.com/cgi-bin/qm/qr?k=_P3sTX49aQJFPm7l4c5YBvQLZu0eW6ZC"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "ios2群", 
+                 "url": "http://qm.qq.com/cgi-bin/qm/qr?k=_P3sTX49aQJFPm7l4c5YBvQLZu0eW6ZC"
+                }, 
+                {
+                    "type": "click", 
+                    "name": "官方客服群", 
+                    "key": "gfkf"
+                }
+            ]
+        }
+    ]
+}';
+
+
+
+
+echo createMenu($data);
+//echo getMenu();
+//echo deleteMenu();
+
+?>
