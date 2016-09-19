@@ -1,0 +1,51 @@
+
+
+
+
+
+<?php
+
+
+    
+        $file_info = array('filename' => '/ncqp/img/zfb.jpg', //国片相对于网站根目录的路径
+        'content-type' => 'image/jpg', //文件类型
+        'filelength' => '48.9' //图文大小
+        );
+        
+        $access_token = "z4blj8GN30zqdC-1esNp5vAMuz0kxbJBxWrnEW0hLdhi9YgX-gewBaXjZnQQCyp8duurIkMTQF4kZHyRCjAF19_jiLHMoAWePGa0xOyRkscWQGdABAFZP";
+        $url = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token={$access_token}&type=image";
+        $ch1 = curl_init();
+        $timeout = 5;
+        $real_path = "{$_SERVER['DOCUMENT_ROOT']}{$file_info['filename']}";
+        //$real_path=str_replace("/", "//", $real_path);
+        $data = array("media" => "@{$real_path}", 'form-data' => $file_info);
+        curl_setopt($ch1, CURLOPT_URL, $url);
+        curl_setopt($ch1, CURLOPT_POST, 1);
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch1, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch1, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch1, CURLOPT_POSTFIELDS, $data);
+        $result = curl_exec($ch1);
+        curl_close($ch1);
+        
+            $result = json_decode($result, true);
+            var_dump($result);
+            echo $result['media_id'];
+       
+    
+    function httpGet($url) {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 500);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $res = curl_exec($curl);
+        curl_close($curl);
+        return $res;
+    }
+
+
+
+
