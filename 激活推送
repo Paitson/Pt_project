@@ -1,0 +1,78 @@
+<?php
+//header("Content-Type: text/html; charset=utf-8");
+header('Content-type: text/html; charset=UTF8'); 
+session_start();
+echo $_SESSION['id'];
+//echo $_SESSION['na'];
+$oid=$_SESSION['id'];
+$name=$_SESSION['na'];
+ $nam = iconv('GBK','UTF-8',$name);
+
+$str2=array('description'=>$name);
+
+
+function unicode_decode($n){
+ 
+  $json = '{"str":"'.$n.'"}';
+  $arr = json_decode($json,true);
+  if(empty($arr)) return '';
+  return $arr['str'];
+}
+
+
+
+
+
+echo "</br>";
+ $arr = array (
+  'touser' => 'o3poQv9PVJwauajyJyrhSr9pmjkY',
+  'msgtype' => 'news',
+  'news' => 
+  array (
+    'articles' => 
+    array (
+      0 => 
+      array (
+        'title' => 'abcdefg',
+        'description' =>"已经为你激活",
+        'url' => 'https://www.baidu.com',
+      ),
+    ),
+  ),
+);
+
+
+$opts1=json_encode($arr);
+$aihao ='{"touser":"o3poQv9PVJwauajyJyrhSr9pmjkY","msgtype":"news","news":{"articles":[{"title":"恭喜您已近成功复活","description":"'.$nam.'已经为你激活","url":"https:\/\/www.baidu.com"}]}}';
+   echo $opts1;
+	//$array1=json_decode($opts,true);
+	//echo $array1;
+	//echo $array1['msgtype'];
+	
+	
+    $access_token = "HmXJbXMZEZef89q0ABo27VWQ_lSYKWpaKbFphHK1AdmJ-SH6RXc9B9ig16mVWjF20uJVlkvkffWqSqBm1-HG3HKbcNDR4BCdgbr-GE-jF7kXQjwRMj8xu2nmGfjkgUVZKDNgADATMW";
+    $url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=".$access_token;
+    $result = https_post($url,$aihao);
+	var_dump ($result);
+	function https_post($url,$data)
+	{
+		$curl = curl_init();
+		curl_setopt($curl,CURLOPT_URL, $url);
+		curl_setopt($curl,CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($curl,CURLOPT_SSL_VERIFYHOST, FALSE);
+		curl_setopt($curl,CURLOPT_POST, 1);
+		curl_setopt($curl,CURLOPT_POSTFIELDS, $data);
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($curl);
+		if (curl_errno($curl)){
+			return 'Errno'.curl_error($curl);
+			
+			
+		}
+		curl_close($curl);
+		return $result;
+		
+	}
+	
+	
+	?>
