@@ -1,0 +1,40 @@
+<?php
+require 'rb_sdk.php';//数组参数
+$oid=$_REQUEST['openid'];
+$money=$_REQUEST['money'];
+$sender = "光速科技";
+//编辑数组
+$obj2 = array();
+$obj2['wxappid'] = "wx5b172f844aacbf9d"; 
+$obj2['mch_id'] = "1454225802";
+$obj2['mch_billno'] = "1454225802".GetRandStr(18);
+$obj2['client_ip'] = "121.40.17.129";
+
+$obj2['re_openid'] = $oid;
+$obj2['total_amount'] = $money;
+//$obj2['min_value'] = $money;
+//$obj2['max_value'] = $money;
+$obj2['total_num'] = 1;
+$obj2['nick_name'] = $sender;
+$obj2['send_name'] = $sender;
+$obj2['wishing'] = "恭喜发财";
+$obj2['act_name'] = $sender."红包";
+$obj2['remark'] = $sender."红包";
+ //请求地址
+$url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
+$wxpay = new wxPay();
+$res = $wxpay->pay($url, $obj2);
+//生成随即字符串的函数
+function GetRandStr($length){
+$str='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+$len=strlen($str)-1;
+$randstr='';
+for($i=0;$i<$length;$i++){
+$num=mt_rand(0,$len);
+$randstr .= $str[$num];
+}
+return $randstr;
+}
+header("Content-type:text/xml");
+echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+echo $res;
